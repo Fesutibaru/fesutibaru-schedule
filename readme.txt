@@ -4,7 +4,7 @@ Tags: festival, schedule, events, shortcode, fesutibaru
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,11 @@ Yes. The API key is stored in the WordPress database and all API calls are made 
 Yes. Each shortcode with different parameters will fetch and cache its data independently.
 
 == Changelog ==
+
+= 0.1.1 =
+* Fix: Map API response field names (camelCase) to match plugin expectations
+* Fix: Events now grouped by date instead of showing "Date TBC"
+* Fix: Event times, types, and speaker names now display correctly
 
 = 0.1.0 =
 * Initial release

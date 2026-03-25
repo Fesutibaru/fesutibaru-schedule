@@ -19,11 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $start_time = '';
 $end_time   = '';
 
-if ( ! empty( $event['start_time'] ) ) {
-    $start_time = wp_date( 'H:i', strtotime( $event['start_time'] ) );
+if ( ! empty( $event['startTime'] ) ) {
+    $start_time = wp_date( 'H:i', strtotime( $event['startTime'] ) );
 }
-if ( ! empty( $event['end_time'] ) ) {
-    $end_time = wp_date( 'H:i', strtotime( $event['end_time'] ) );
+if ( ! empty( $event['endTime'] ) ) {
+    $end_time = wp_date( 'H:i', strtotime( $event['endTime'] ) );
 }
 
 $time_display = $start_time;
@@ -31,20 +31,18 @@ if ( $start_time && $end_time ) {
     $time_display = $start_time . ' – ' . $end_time;
 }
 
-// Extract speaker names
+// Extract speaker names from participants array
 $speakers = array();
-if ( $show_speakers && ! empty( $event['authors'] ) ) {
-    foreach ( $event['authors'] as $author ) {
-        if ( ! empty( $author['name'] ) ) {
-            $speakers[] = $author['name'];
+if ( $show_speakers && ! empty( $event['participants'] ) ) {
+    foreach ( $event['participants'] as $participant ) {
+        $name = trim( ( $participant['firstName'] ?? '' ) . ' ' . ( $participant['lastName'] ?? '' ) );
+        if ( empty( $name ) ) {
+            continue;
         }
-    }
-}
-if ( $show_speakers && ! empty( $event['chairs'] ) ) {
-    foreach ( $event['chairs'] as $chair ) {
-        if ( ! empty( $chair['name'] ) ) {
-            $speakers[] = $chair['name'] . ' (chair)';
+        if ( ( $participant['role'] ?? '' ) === 'chair' ) {
+            $name .= ' (chair)';
         }
+        $speakers[] = $name;
     }
 }
 
@@ -84,9 +82,9 @@ if ( $show_venues && ! empty( $event['venue']['name'] ) ) {
             </p>
         <?php endif; ?>
 
-        <?php if ( ! empty( $event['event_type'] ) ) : ?>
+        <?php if ( ! empty( $event['eventType'] ) ) : ?>
             <span class="fesutibaru-schedule__type">
-                <?php echo esc_html( $event['event_type'] ); ?>
+                <?php echo esc_html( $event['eventType'] ); ?>
             </span>
         <?php endif; ?>
     </div>

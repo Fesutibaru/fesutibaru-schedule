@@ -10,3 +10,6 @@ Thumbs.db
 
 # Build artifacts
 *.zip
+
+# Script secrets
+scripts/.env

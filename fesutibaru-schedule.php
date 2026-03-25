@@ -3,7 +3,7 @@
  * Plugin Name: Fesutibaru Schedule
  * Plugin URI:  https://github.com/Fesutibaru/fesutibaru-schedule
  * Description: Display your festival schedule from the Fesutibaru platform using a simple shortcode.
- * Version:     0.1.0
+ * Version:     0.1.1
  * Author:      Fesutibaru
  * Author URI:  https://fesutibaru.com
  * License:     GPL-2.0-or-later
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'FESUTIBARU_SCHEDULE_VERSION', '0.1.0' );
+define( 'FESUTIBARU_SCHEDULE_VERSION', '0.1.1' );
 define( 'FESUTIBARU_SCHEDULE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FESUTIBARU_SCHEDULE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

@@ -101,7 +101,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
         if ( ! empty( $atts['days'] ) ) {
             $max_date = wp_date( 'Y-m-d', strtotime( '+' . (int) $atts['days'] . ' days' ) );
             $events   = array_filter( $events, function ( $event ) use ( $max_date ) {
-                $event_date = substr( $event['start_time'] ?? '', 0, 10 );
+                $event_date = substr( $event['startTime'] ?? '', 0, 10 );
                 return $event_date <= $max_date;
             } );
         }
@@ -109,7 +109,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
         // Group events by day
         $grouped = array();
         foreach ( $events as $event ) {
-            $date_key = substr( $event['start_time'] ?? 'unknown', 0, 10 );
+            $date_key = substr( $event['startTime'] ?? 'unknown', 0, 10 );
             $grouped[ $date_key ][] = $event;
         }
 
