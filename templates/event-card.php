@@ -82,6 +82,12 @@ if ( $show_venues && ! empty( $event['venue']['name'] ) ) {
             </p>
         <?php endif; ?>
 
+        <?php if ( ! empty( $event['ticketUrl'] ) ) : ?>
+            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['ticketUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
+                <?php echo esc_html__( 'Tickets', 'fesutibaru-schedule' ); ?>
+            </a>
+        <?php endif; ?>
+
         <?php if ( ! empty( $event['eventType'] ) ) : ?>
             <span class="fesutibaru-schedule__type">
                 <?php echo esc_html( $event['eventType'] ); ?>

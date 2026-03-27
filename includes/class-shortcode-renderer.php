@@ -24,7 +24,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             'days'          => '',
             'venue'         => '',
             'search'        => '',
-            'limit'         => 50,
+            'limit'         => 500,
             'show_speakers' => 'yes',
             'show_venues'   => 'yes',
             'date'          => '',
