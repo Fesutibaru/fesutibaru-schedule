@@ -46,9 +46,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
         }
 
         // Build API query parameters
-        $query_params = array(
-            'limit' => (int) $atts['limit'],
-        );
+        $query_params = array();
 
         if ( ! empty( $atts['search'] ) ) {
             $query_params['search'] = $atts['search'];
@@ -62,33 +60,58 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             $query_params['date'] = $atts['date'];
         }
 
+        $max_events = (int) $atts['limit'];
+
         // Check cache first
         $cache_duration = (int) Fesutibaru_Schedule_Settings::get( 'cache_duration', 5 );
         $cache          = new Fesutibaru_Schedule_Cache( $cache_duration );
-        $cache_key      = $cache->make_key( $query_params );
+        $cache_key      = $cache->make_key( array_merge( $query_params, array( 'limit' => $max_events ) ) );
 
         $events = $cache->get( $cache_key );
 
         if ( false === $events ) {
-            // Cache miss — fetch from API
+            // Cache miss — fetch all pages from API (max 200 per page)
             $client = new Fesutibaru_Schedule_API_Client( $base_url, $api_key );
-            $result = $client->get_events( $query_params );
+            $events = array();
+            $page   = 1;
 
-            if ( is_wp_error( $result ) ) {
-                // Try stale cache
-                $events = $cache->get_stale( $cache_key );
+            while ( count( $events ) < $max_events ) {
+                $per_page     = min( 200, $max_events - count( $events ) );
+                $page_params  = array_merge( $query_params, array(
+                    'per_page' => $per_page,
+                    'page'     => $page,
+                ) );
 
-                if ( false === $events ) {
-                    // No stale cache either — show admin notice, nothing to visitors
-                    if ( current_user_can( 'manage_options' ) ) {
-                        return '<p class="fesutibaru-schedule__notice">'
-                            . esc_html( $result->get_error_message() ) . '</p>';
+                $result = $client->get_events( $page_params );
+
+                if ( is_wp_error( $result ) ) {
+                    // Try stale cache if we got nothing yet
+                    if ( empty( $events ) ) {
+                        $events = $cache->get_stale( $cache_key );
+
+                        if ( false === $events ) {
+                            if ( current_user_can( 'manage_options' ) ) {
+                                return '<p class="fesutibaru-schedule__notice">'
+                                    . esc_html( $result->get_error_message() ) . '</p>';
+                            }
+                            return '';
+                        }
                     }
-                    return '';
+                    break;
                 }
-            } else {
-                // Normalise: the API may return { data: [...] } or just [...]
-                $events = isset( $result['data'] ) ? $result['data'] : $result;
+
+                $page_data = isset( $result['data'] ) ? $result['data'] : $result;
+                $events    = array_merge( $events, $page_data );
+
+                // Stop if we got fewer than requested (last page)
+                if ( count( $page_data ) < $per_page ) {
+                    break;
+                }
+
+                $page++;
+            }
+
+            if ( ! empty( $events ) ) {
                 $cache->set( $cache_key, $events );
             }
         }
