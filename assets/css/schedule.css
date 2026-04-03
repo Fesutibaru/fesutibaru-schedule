@@ -34,11 +34,25 @@
 
 /* --- List view --- */
 .fesutibaru-schedule--list .fesutibaru-schedule__event {
+    display: flex;
+    gap: 1.25em;
     padding: 1em;
     border: 1px solid #e5e7eb;
     border-radius: 0.5em;
     background: #fff;
     transition: box-shadow 0.15s ease;
+}
+
+.fesutibaru-schedule__image {
+    flex-shrink: 0;
+    width: 100px;
+}
+
+.fesutibaru-schedule__image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.375em;
+    display: block;
 }
 
 .fesutibaru-schedule--list .fesutibaru-schedule__event:hover {
@@ -163,7 +177,12 @@
 /* --- Responsive --- */
 @media (max-width: 600px) {
     .fesutibaru-schedule--list .fesutibaru-schedule__event {
+        flex-direction: column;
         padding: 0.75em;
+    }
+
+    .fesutibaru-schedule__image {
+        width: 80px;
     }
 }
 

@@ -72,6 +72,12 @@ if ( ! empty( $event['ticketPriceKids'] ) ) {
 $price_display = implode( ' | ', $prices );
 ?>
 <div class="fesutibaru-schedule__event">
+    <?php if ( ! empty( $event['imageUrl'] ) ) : ?>
+        <div class="fesutibaru-schedule__image">
+            <img src="<?php echo esc_url( $event['imageUrl'] ); ?>" alt="<?php echo esc_attr( $event['title'] ?? '' ); ?>" loading="lazy" />
+        </div>
+    <?php endif; ?>
+
     <div class="fesutibaru-schedule__details">
         <?php if ( $event_date ) : ?>
             <div class="fesutibaru-schedule__event-date">
