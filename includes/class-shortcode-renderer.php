@@ -120,6 +120,15 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             return $this->load_template( 'no-events', array( 'atts' => $atts ) );
         }
 
+        // Filter by specific date if specified
+        if ( ! empty( $atts['date'] ) ) {
+            $filter_date = $atts['date'];
+            $events      = array_filter( $events, function ( $event ) use ( $filter_date ) {
+                $event_date = substr( $event['startTime'] ?? '', 0, 10 );
+                return $event_date === $filter_date;
+            } );
+        }
+
         // Filter by number of days if specified
         if ( ! empty( $atts['days'] ) ) {
             $max_date = wp_date( 'Y-m-d', strtotime( '+' . (int) $atts['days'] . ' days' ) );
