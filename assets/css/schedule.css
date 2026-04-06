@@ -75,6 +75,29 @@
 
 .fesutibaru-schedule__details {
     min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1em;
+    flex: 1;
+}
+
+.fesutibaru-schedule__left {
+    display: flex;
+    gap: 1em;
+    min-width: 0;
+    flex: 1;
+}
+
+.fesutibaru-schedule__content {
+    min-width: 0;
+    flex: 1;
+}
+
+.fesutibaru-schedule__meta {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
 }
 
 .fesutibaru-schedule__title {
@@ -101,7 +124,6 @@
 .fesutibaru-schedule__venue {
     font-size: 0.8em;
     color: #9ca3af;
-    margin: 0.25em 0 0;
 }
 
 .fesutibaru-schedule__ticket-link {
@@ -183,6 +205,14 @@
 
     .fesutibaru-schedule__image {
         width: 80px;
+    }
+
+    .fesutibaru-schedule__details {
+        flex-direction: column;
+    }
+
+    .fesutibaru-schedule__left {
+        flex-direction: column;
     }
 }
 

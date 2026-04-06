@@ -37,16 +37,17 @@
         days.forEach(function (day, index) {
             var date = day.getAttribute('data-date');
 
-            if (saved.hasOwnProperty(date)) {
+            if (index === 0) {
+                // First day always expanded on page load
+                day.classList.remove('is-collapsed');
+            } else if (saved.hasOwnProperty(date)) {
                 // Restore saved state
                 if (saved[date]) {
                     day.classList.add('is-collapsed');
                 }
             } else {
-                // No saved state — expand first day, collapse the rest
-                if (index > 0) {
-                    day.classList.add('is-collapsed');
-                }
+                // No saved state — collapse by default
+                day.classList.add('is-collapsed');
             }
 
             var heading = day.querySelector('.fesutibaru-schedule__date');

@@ -74,61 +74,68 @@ $price_display = implode( ' | ', $prices );
 <div class="fesutibaru-schedule__event">
     <?php if ( ! empty( $event['imageUrl'] ) ) : ?>
         <div class="fesutibaru-schedule__image">
-            <img src="<?php echo esc_url( $event['imageUrl'] ); ?>" alt="<?php echo esc_attr( $event['title'] ?? '' ); ?>" loading="lazy" />
+            <img decoding="async" src="<?php echo esc_url( $event['imageUrl'] ); ?>" alt="<?php echo esc_attr( $event['title'] ?? '' ); ?>" loading="lazy" />
         </div>
     <?php endif; ?>
 
     <div class="fesutibaru-schedule__details">
-        <?php if ( $event_date ) : ?>
-            <div class="fesutibaru-schedule__event-date">
-                <?php echo esc_html( $event_date ); ?>
+        <div class="fesutibaru-schedule__left">
+            <?php if ( $event_date ) : ?>
+                <div class="fesutibaru-schedule__event-date">
+                    <?php echo esc_html( $event_date ); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="fesutibaru-schedule__content">
+                <h4 class="fesutibaru-schedule__title">
+                    <?php echo esc_html( $event['title'] ?? '' ); ?>
+                </h4>
+
+                <?php if ( ! empty( $speakers ) ) : ?>
+                    <p class="fesutibaru-schedule__speakers">
+                        <?php echo esc_html( implode( ', ', $speakers ) ); ?>
+                    </p>
+                <?php endif; ?>
+
+                <?php if ( $time_display || $venue_name ) : ?>
+                    <div class="fesutibaru-schedule__meta">
+                        <?php if ( $time_display ) : ?>
+                            <span class="fesutibaru-schedule__time">
+                                <?php echo esc_html( $time_display ); ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ( $venue_name ) : ?>
+                            <span class="fesutibaru-schedule__venue">
+                                <?php echo esc_html( $venue_name ); ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( $price_display ) : ?>
+                    <p class="fesutibaru-schedule__price">
+                        <?php echo esc_html( $price_display ); ?>
+                    </p>
+                <?php endif; ?>
+
+                <?php if ( ! empty( $event['eventType'] ) ) : ?>
+                    <span class="fesutibaru-schedule__type">
+                        <?php echo esc_html( $event['eventType'] ); ?>
+                    </span>
+                <?php endif; ?>
+
+                <?php if ( ! empty( $event['description'] ) ) : ?>
+                    <p class="fesutibaru-schedule__description">
+                        <?php echo esc_html( $event['description'] ); ?>
+                    </p>
+                <?php endif; ?>
             </div>
-        <?php endif; ?>
-
-        <h4 class="fesutibaru-schedule__title">
-            <?php echo esc_html( $event['title'] ?? '' ); ?>
-        </h4>
-
-        <?php if ( ! empty( $speakers ) ) : ?>
-            <p class="fesutibaru-schedule__speakers">
-                <?php echo esc_html( implode( ', ', $speakers ) ); ?>
-            </p>
-        <?php endif; ?>
-
-        <?php if ( $time_display ) : ?>
-            <div class="fesutibaru-schedule__time">
-                <?php echo esc_html( $time_display ); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if ( $venue_name ) : ?>
-            <p class="fesutibaru-schedule__venue">
-                <?php echo esc_html( $venue_name ); ?>
-            </p>
-        <?php endif; ?>
-
-        <?php if ( $price_display ) : ?>
-            <p class="fesutibaru-schedule__price">
-                <?php echo esc_html( $price_display ); ?>
-            </p>
-        <?php endif; ?>
-
-        <?php if ( ! empty( $event['eventType'] ) ) : ?>
-            <span class="fesutibaru-schedule__type">
-                <?php echo esc_html( $event['eventType'] ); ?>
-            </span>
-        <?php endif; ?>
+        </div>
 
         <?php if ( ! empty( $event['ticketUrl'] ) ) : ?>
             <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['ticketUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
                 <?php echo esc_html__( 'Tickets', 'fesutibaru-schedule' ); ?>
             </a>
-        <?php endif; ?>
-
-        <?php if ( ! empty( $event['description'] ) ) : ?>
-            <p class="fesutibaru-schedule__description">
-                <?php echo esc_html( $event['description'] ); ?>
-            </p>
         <?php endif; ?>
     </div>
 </div>
