@@ -28,6 +28,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             'show_speakers' => 'yes',
             'show_venues'   => 'yes',
             'date'          => '',
+            'event_type'    => '',
             'class'         => '',
         ), $atts, 'fesutibaru_schedule' );
 
@@ -58,6 +59,10 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
 
         if ( ! empty( $atts['date'] ) ) {
             $query_params['date'] = $atts['date'];
+        }
+
+        if ( ! empty( $atts['event_type'] ) ) {
+            $query_params['event_type'] = $atts['event_type'];
         }
 
         $max_events = (int) $atts['limit'];
@@ -126,6 +131,14 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             $events      = array_filter( $events, function ( $event ) use ( $filter_date ) {
                 $event_date = substr( $event['startTime'] ?? '', 0, 10 );
                 return $event_date === $filter_date;
+            } );
+        }
+
+        // Filter by event type if specified
+        if ( ! empty( $atts['event_type'] ) ) {
+            $filter_type = $atts['event_type'];
+            $events      = array_filter( $events, function ( $event ) use ( $filter_type ) {
+                return ( $event['eventType'] ?? '' ) === $filter_type;
             } );
         }
 
