@@ -76,9 +76,9 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             'aud' => 'audio_described',
             'rax' => 'relaxed_performance',
         );
-        foreach ( $accessibility_map as $shortcode_key => $api_key ) {
+        foreach ( $accessibility_map as $shortcode_key => $api_param ) {
             if ( filter_var( $atts[ $shortcode_key ], FILTER_VALIDATE_BOOLEAN ) ) {
-                $query_params[ $api_key ] = 'true';
+                $query_params[ $api_param ] = 'true';
             }
         }
 
