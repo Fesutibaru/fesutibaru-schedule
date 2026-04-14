@@ -112,6 +112,32 @@ $price_display = implode( ' | ', $prices );
                     </div>
                 <?php endif; ?>
 
+                <?php
+                // Build accessibility indicators
+                $a11y_labels = array();
+                if ( ! empty( $event['bslInterpreted'] ) ) {
+                    $a11y_labels[] = array( 'key' => 'bsl', 'label' => __( 'BSL Interpreted', 'fesutibaru-schedule' ) );
+                }
+                if ( ! empty( $event['captioned'] ) ) {
+                    $a11y_labels[] = array( 'key' => 'captioned', 'label' => __( 'Captioned', 'fesutibaru-schedule' ) );
+                }
+                if ( ! empty( $event['audioDescribed'] ) ) {
+                    $a11y_labels[] = array( 'key' => 'audio-described', 'label' => __( 'Audio Described', 'fesutibaru-schedule' ) );
+                }
+                if ( ! empty( $event['relaxedPerformance'] ) ) {
+                    $a11y_labels[] = array( 'key' => 'relaxed', 'label' => __( 'Relaxed Performance', 'fesutibaru-schedule' ) );
+                }
+                ?>
+                <?php if ( ! empty( $a11y_labels ) ) : ?>
+                    <div class="fesutibaru-schedule__accessibility">
+                        <?php foreach ( $a11y_labels as $a11y ) : ?>
+                            <span class="fesutibaru-schedule__accessibility-tag fesutibaru-schedule__accessibility-tag--<?php echo esc_attr( $a11y['key'] ); ?>">
+                                <?php echo esc_html( $a11y['label'] ); ?>
+                            </span>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
                 <?php if ( $price_display ) : ?>
                     <p class="fesutibaru-schedule__price">
                         <?php echo esc_html( $price_display ); ?>

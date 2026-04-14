@@ -29,6 +29,10 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             'show_venues'   => 'yes',
             'date'          => '',
             'event_type'    => '',
+            'bsl'           => '',
+            'cap'           => '',
+            'aud'           => '',
+            'rax'           => '',
             'class'         => '',
         ), $atts, 'fesutibaru_schedule' );
 
@@ -63,6 +67,19 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
 
         if ( ! empty( $atts['event_type'] ) ) {
             $query_params['event_type'] = $atts['event_type'];
+        }
+
+        // Accessibility filters (shortcode uses short codes, API uses full column names)
+        $accessibility_map = array(
+            'bsl' => 'bsl_interpreted',
+            'cap' => 'captioned',
+            'aud' => 'audio_described',
+            'rax' => 'relaxed_performance',
+        );
+        foreach ( $accessibility_map as $shortcode_key => $api_key ) {
+            if ( filter_var( $atts[ $shortcode_key ], FILTER_VALIDATE_BOOLEAN ) ) {
+                $query_params[ $api_key ] = 'true';
+            }
         }
 
         $max_events = (int) $atts['limit'];
@@ -140,6 +157,21 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             $events      = array_filter( $events, function ( $event ) use ( $filter_type ) {
                 return ( $event['eventType'] ?? '' ) === $filter_type;
             } );
+        }
+
+        // Filter by accessibility flags
+        $a11y_filters = array(
+            'bsl' => 'bslInterpreted',
+            'cap' => 'captioned',
+            'aud' => 'audioDescribed',
+            'rax' => 'relaxedPerformance',
+        );
+        foreach ( $a11y_filters as $shortcode_key => $api_field ) {
+            if ( filter_var( $atts[ $shortcode_key ], FILTER_VALIDATE_BOOLEAN ) ) {
+                $events = array_filter( $events, function ( $event ) use ( $api_field ) {
+                    return ! empty( $event[ $api_field ] );
+                } );
+            }
         }
 
         // Filter by number of days if specified
