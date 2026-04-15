@@ -33,6 +33,7 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             'cap'           => '',
             'aud'           => '',
             'rax'           => '',
+            'live_stream'   => '',
             'class'         => '',
         ), $atts, 'fesutibaru_schedule' );
 
@@ -80,6 +81,11 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
             if ( filter_var( $atts[ $shortcode_key ], FILTER_VALIDATE_BOOLEAN ) ) {
                 $query_params[ $api_param ] = 'true';
             }
+        }
+
+        // Live stream filter
+        if ( filter_var( $atts['live_stream'], FILTER_VALIDATE_BOOLEAN ) ) {
+            $query_params['live_stream'] = 'true';
         }
 
         $max_events = (int) $atts['limit'];
@@ -172,6 +178,13 @@ class Fesutibaru_Schedule_Shortcode_Renderer {
                     return ! empty( $event[ $api_field ] );
                 } );
             }
+        }
+
+        // Filter by live stream availability
+        if ( filter_var( $atts['live_stream'], FILTER_VALIDATE_BOOLEAN ) ) {
+            $events = array_filter( $events, function ( $event ) {
+                return ! empty( $event['liveStreamUrl'] );
+            } );
         }
 
         // Filter by number of days if specified

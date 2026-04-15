@@ -97,21 +97,6 @@ $price_display = implode( ' | ', $prices );
                     </p>
                 <?php endif; ?>
 
-                <?php if ( $time_display || $venue_name ) : ?>
-                    <div class="fesutibaru-schedule__meta">
-                        <?php if ( $time_display ) : ?>
-                            <span class="fesutibaru-schedule__time">
-                                <?php echo esc_html( $time_display ); ?>
-                            </span>
-                        <?php endif; ?>
-                        <?php if ( $venue_name ) : ?>
-                            <span class="fesutibaru-schedule__venue">
-                                <?php echo esc_html( $venue_name ); ?>
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-
                 <?php
                 // Build accessibility indicators
                 $a11y_labels = array();
@@ -127,14 +112,30 @@ $price_display = implode( ' | ', $prices );
                 if ( ! empty( $event['relaxedPerformance'] ) ) {
                     $a11y_labels[] = array( 'key' => 'relaxed', 'label' => __( 'Relaxed Performance', 'fesutibaru-schedule' ) );
                 }
+                $has_live_stream = ! empty( $event['liveStreamUrl'] );
                 ?>
-                <?php if ( ! empty( $a11y_labels ) ) : ?>
-                    <div class="fesutibaru-schedule__accessibility">
+                <?php if ( $time_display || $venue_name || ! empty( $a11y_labels ) || $has_live_stream ) : ?>
+                    <div class="fesutibaru-schedule__meta">
+                        <?php if ( $time_display ) : ?>
+                            <span class="fesutibaru-schedule__time">
+                                <?php echo esc_html( $time_display ); ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ( $venue_name ) : ?>
+                            <span class="fesutibaru-schedule__venue">
+                                <?php echo esc_html( $venue_name ); ?>
+                            </span>
+                        <?php endif; ?>
                         <?php foreach ( $a11y_labels as $a11y ) : ?>
                             <span class="fesutibaru-schedule__accessibility-tag fesutibaru-schedule__accessibility-tag--<?php echo esc_attr( $a11y['key'] ); ?>">
                                 <?php echo esc_html( $a11y['label'] ); ?>
                             </span>
                         <?php endforeach; ?>
+                        <?php if ( $has_live_stream ) : ?>
+                            <span class="fesutibaru-schedule__live-stream">
+                                <?php echo esc_html__( 'Live Stream', 'fesutibaru-schedule' ); ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
 
