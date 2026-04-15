@@ -112,9 +112,8 @@ $price_display = implode( ' | ', $prices );
                 if ( ! empty( $event['relaxedPerformance'] ) ) {
                     $a11y_labels[] = array( 'key' => 'relaxed', 'label' => __( 'Relaxed Performance', 'fesutibaru-schedule' ) );
                 }
-                $has_live_stream = ! empty( $event['liveStreamUrl'] );
                 ?>
-                <?php if ( $time_display || $venue_name || ! empty( $a11y_labels ) || $has_live_stream ) : ?>
+                <?php if ( $time_display || $venue_name || ! empty( $a11y_labels ) ) : ?>
                     <div class="fesutibaru-schedule__meta">
                         <?php if ( $time_display ) : ?>
                             <span class="fesutibaru-schedule__time">
@@ -131,11 +130,6 @@ $price_display = implode( ' | ', $prices );
                                 <?php echo esc_html( $a11y['label'] ); ?>
                             </span>
                         <?php endforeach; ?>
-                        <?php if ( $has_live_stream ) : ?>
-                            <span class="fesutibaru-schedule__live-stream">
-                                <?php echo esc_html__( 'Live Stream', 'fesutibaru-schedule' ); ?>
-                            </span>
-                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
 
@@ -159,9 +153,14 @@ $price_display = implode( ' | ', $prices );
             </div>
         </div>
 
-        <?php if ( ! empty( $event['ticketUrl'] ) ) : ?>
+        <?php $show_live_stream = filter_var( $atts['live_stream'] ?? '', FILTER_VALIDATE_BOOLEAN ); ?>
+        <?php if ( $show_live_stream && ! empty( $event['liveStreamUrl'] ) ) : ?>
+            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['liveStreamUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
+                <?php echo esc_html__( 'Buy Tickets', 'fesutibaru-schedule' ); ?>
+            </a>
+        <?php elseif ( ! $show_live_stream && ! empty( $event['ticketUrl'] ) ) : ?>
             <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['ticketUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
-                <?php echo esc_html__( 'Tickets', 'fesutibaru-schedule' ); ?>
+                <?php echo esc_html__( 'Buy Tickets', 'fesutibaru-schedule' ); ?>
             </a>
         <?php endif; ?>
     </div>
