@@ -103,6 +103,19 @@ class Fesutibaru_Schedule_Settings {
         );
 
         add_settings_field(
+            'tracking_parameter',
+            __( 'Link Tracking Parameter', 'fesutibaru-schedule' ),
+            array( $this, 'render_text_field' ),
+            'fesutibaru-schedule',
+            'fesutibaru_display_section',
+            array(
+                'field'       => 'tracking_parameter',
+                'placeholder' => 'utm_source=main_website',
+                'description' => __( 'Query string to append to all outgoing links (e.g. utm_source=main_website&utm_medium=schedule).', 'fesutibaru-schedule' ),
+            )
+        );
+
+        add_settings_field(
             'default_view',
             __( 'Default View', 'fesutibaru-schedule' ),
             array( $this, 'render_select_field' ),
@@ -131,6 +144,7 @@ class Fesutibaru_Schedule_Settings {
         $sanitized['api_base_url']    = esc_url_raw( rtrim( $input['api_base_url'] ?? '', '/' ) );
         $sanitized['api_key']         = sanitize_text_field( $input['api_key'] ?? '' );
         $sanitized['cache_duration']  = max( 1, min( 1440, (int) ( $input['cache_duration'] ?? 5 ) ) );
+        $sanitized['tracking_parameter'] = sanitize_text_field( $input['tracking_parameter'] ?? '' );
         $sanitized['default_view']    = in_array( $input['default_view'] ?? '', array( 'list', 'grid' ), true )
             ? $input['default_view']
             : 'list';

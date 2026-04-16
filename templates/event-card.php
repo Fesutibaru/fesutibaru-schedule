@@ -101,7 +101,7 @@ $price_display = implode( ' | ', $prices );
                 // Build accessibility indicators
                 $a11y_labels = array();
                 if ( ! empty( $event['bslInterpreted'] ) ) {
-                    $a11y_labels[] = array( 'key' => 'bsl', 'label' => __( 'BSL Interpreted', 'fesutibaru-schedule' ) );
+                    $a11y_labels[] = array( 'key' => 'bsl', 'label' => __( 'BSL', 'fesutibaru-schedule' ) );
                 }
                 if ( ! empty( $event['captioned'] ) ) {
                     $a11y_labels[] = array( 'key' => 'captioned', 'label' => __( 'Captioned', 'fesutibaru-schedule' ) );
@@ -118,6 +118,11 @@ $price_display = implode( ' | ', $prices );
                         <?php if ( $time_display ) : ?>
                             <span class="fesutibaru-schedule__time">
                                 <?php echo esc_html( $time_display ); ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $event['ageCategory'] ) ) : ?>
+                            <span class="fesutibaru-schedule__age-category">
+                                <?php echo esc_html( $event['ageCategory'] ); ?>
                             </span>
                         <?php endif; ?>
                         <?php if ( $venue_name ) : ?>
@@ -153,14 +158,29 @@ $price_display = implode( ' | ', $prices );
             </div>
         </div>
 
-        <?php $show_live_stream = filter_var( $atts['live_stream'] ?? '', FILTER_VALIDATE_BOOLEAN ); ?>
+        <?php
+        $show_live_stream = filter_var( $atts['live_stream'] ?? '', FILTER_VALIDATE_BOOLEAN );
+        $tracking_param   = Fesutibaru_Schedule_Settings::get( 'tracking_parameter', '' );
+        ?>
         <?php if ( $show_live_stream && ! empty( $event['liveStreamUrl'] ) ) : ?>
-            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['liveStreamUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
-                <?php echo esc_html__( 'Buy Tickets', 'fesutibaru-schedule' ); ?>
+            <?php
+            $link_url = $event['liveStreamUrl'];
+            if ( $tracking_param ) {
+                $link_url = add_query_arg( wp_parse_args( $tracking_param ), $link_url );
+            }
+            ?>
+            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $link_url ); ?>" target="_blank" rel="noopener noreferrer">
+                <?php echo esc_html__( 'Tickets and Info', 'fesutibaru-schedule' ); ?>
             </a>
         <?php elseif ( ! $show_live_stream && ! empty( $event['ticketUrl'] ) ) : ?>
-            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $event['ticketUrl'] ); ?>" target="_blank" rel="noopener noreferrer">
-                <?php echo esc_html__( 'Buy Tickets', 'fesutibaru-schedule' ); ?>
+            <?php
+            $link_url = $event['ticketUrl'];
+            if ( $tracking_param ) {
+                $link_url = add_query_arg( wp_parse_args( $tracking_param ), $link_url );
+            }
+            ?>
+            <a class="fesutibaru-schedule__ticket-link" href="<?php echo esc_url( $link_url ); ?>" target="_blank" rel="noopener noreferrer">
+                <?php echo esc_html__( 'Tickets and Info', 'fesutibaru-schedule' ); ?>
             </a>
         <?php endif; ?>
     </div>
