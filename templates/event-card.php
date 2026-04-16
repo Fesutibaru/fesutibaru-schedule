@@ -120,7 +120,7 @@ $price_display = implode( ' | ', $prices );
                                 <?php echo esc_html( $time_display ); ?>
                             </span>
                         <?php endif; ?>
-                        <?php if ( ! empty( $event['ageCategory'] ) ) : ?>
+                        <?php if ( ! empty( $event['ageCategory'] ) && ( $atts['event_type'] ?? '' ) === 'FBF Event' ) : ?>
                             <span class="fesutibaru-schedule__age-category">
                                 <?php echo esc_html( $event['ageCategory'] ); ?>
                             </span>
